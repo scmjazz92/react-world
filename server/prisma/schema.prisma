@@ -1,0 +1,91 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  username  String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  profile   String?
+
+  token   Token[]
+  article Article[]
+  comment Comment[]
+}
+
+model Token {
+  id              Int      @id @default(autoincrement())
+  rotationCounter Int      @default(1)
+  createdAt       DateTime @default(now())
+  blocked         Boolean  @default(false)
+
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int
+}
+
+model Article {
+  id        Int      @id @default(autoincrement())
+  title     String
+  body      String
+  thumbnail String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       Int
+  comment      Comment[]
+  articleStats ArticleStats?
+  articleLike  ArticleLike[]
+
+  @@index([createdAt(sort: Desc)])
+}
+
+model ArticleLike {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  article   Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  articleId Int
+  userId    Int
+
+  @@unique([articleId, userId])
+  @@index(articleId)
+}
+
+model Comment {
+  id   Int    @id @default(autoincrement())
+  text String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int
+
+  article   Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  articleId Int
+
+  @@index(createdAt)
+}
+
+model ArticleStats {
+  id            Int @id @default(autoincrement())
+  likes         Int @default(0)
+  commentsCount Int @default(0)
+  views         Int @default(0)
+
+  article   Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  articleId Int     @unique
+
+  @@index([likes(sort: Desc), articleId(sort: Desc)])
+}
