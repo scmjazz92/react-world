@@ -1,7 +1,8 @@
 import React from 'react'
+import BasicLayout from '../components/@layout/BasicLayout'
 
 const Main = () => {
-  return <div>메인</div>
+  return <BasicLayout>메인</BasicLayout>
 }
 
 export default Main
