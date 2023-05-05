@@ -6,10 +6,12 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "transform:svg": "yarn svgr --typescript --out-dir src/components/@icon src/assets/icons"
   },
   "dependencies": {
     "@emotion/react": "^11.10.6",
+    "@svgr/cli": "^7.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.10.0"
