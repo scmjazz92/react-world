@@ -1,5 +1,5 @@
 import client from '../lib/client'
-import { AuthParams, AuthResult } from './types'
+import { AuthParams, AuthResult, Tokens, User } from './types'
 
 const Auth = {
   async register({ username, password }: AuthParams) {
@@ -15,6 +15,18 @@ const Auth = {
       username,
       password,
     })
+    return response.data
+  },
+
+  async refresh(refresh_token?: string | null) {
+    const response = await client.get<Tokens>('/auth/refresh', {
+      headers: refresh_token
+        ? {
+            refresh_token,
+          }
+        : undefined,
+    })
+
     return response.data
   },
 }

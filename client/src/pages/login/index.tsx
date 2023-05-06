@@ -5,14 +5,16 @@ import LoginForm from '../../components/auth/LoginForm'
 import HeaderBackButton from '../../components/header/HeaderBackButton'
 import useLogin from '../../hooks/apis/auth/useLogin'
 import useGoBack from '../../hooks/useGoBack'
+import useRedirect from '../../hooks/useRedirect'
 
 const Login = () => {
+  const redirect = useRedirect()
   const goBack = useGoBack()
   const { mutate, error } = useLogin()
 
   const onLogin = (params: AuthParams, form: HTMLFormElement) =>
     mutate(params, {
-      onSuccess: () => goBack(),
+      onSuccess: () => redirect(),
       onError: () => form.reset(),
     })
 
