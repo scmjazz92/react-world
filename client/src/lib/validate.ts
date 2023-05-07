@@ -13,6 +13,11 @@ const validate = {
     }, 0)
     return counter > 1
   },
+  firstEmptyValue(data: Record<string, string>) {
+    const keys = Object.keys(data)
+    const result = keys.find((key) => !data[key])
+    return result ?? null
+  },
 }
 
 export default validate
