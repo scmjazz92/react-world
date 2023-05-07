@@ -28,23 +28,28 @@ export class UploadService {
     files: Express.Multer.File[]
   }) {
     try {
-      const file = files[0]
-      const key = `${folder}/${Date.now()}_${path.basename(
-        file.originalname,
-      )}`.replace(/ /g, '')
+      const result = []
+      const upload = files.map(async (file) => {
+        const key = `${folder}/${Date.now()}_${path.basename(
+          file.originalname,
+        )}`.replace(/ /g, '')
 
-      const putObject = new PutObjectCommand({
-        Bucket: this.S3_BUCKET_NAME,
-        Key: key,
-        Body: file.buffer,
-        ACL: 'public-read',
-        ContentType: file.mimetype,
+        const putObject = new PutObjectCommand({
+          Bucket: this.S3_BUCKET_NAME,
+          Key: key,
+          Body: file.buffer,
+          ACL: 'public-read',
+          ContentType: file.mimetype,
+        })
+
+        await this.awsS3.send(putObject)
+        result.push(this.getAwsS3FileUrl(key))
       })
 
-      await this.awsS3.send(putObject)
+      await Promise.all(upload)
 
       return {
-        url: this.getAwsS3FileUrl(key),
+        url: result,
       }
     } catch (error) {
       throw new AppError('BadRequest')
