@@ -15,7 +15,7 @@ export class AuthService {
   ) {}
 
   async generateTokens(user: User, tokenItem?: Token) {
-    const { id: userId, username, profile } = user
+    const { id: userId, username } = user
     const token =
       tokenItem ?? (await this.authRepository.createTokenItem(userId))
     const tokenId = token.id
@@ -26,7 +26,6 @@ export class AuthService {
         userId,
         username,
         id: tokenId,
-        profile,
       }),
       this.jwtService.generateToken({
         type: 'refresh_token',

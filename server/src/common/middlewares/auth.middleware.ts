@@ -33,7 +33,6 @@ export class AuthMiddleware implements NestMiddleware {
         return {
           id: decoded.userId,
           username: decoded.username,
-          profile: decoded.profile,
         }
       }
 
@@ -53,7 +52,6 @@ declare module 'express' {
     user: {
       id: number
       username: string
-      profile: string | null
     } | null
     isExpiredToken: boolean
   }

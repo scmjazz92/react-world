@@ -15,10 +15,6 @@ export class UserEntity implements User {
   @Exclude({ toPlainOnly: true })
   readonly createdAt: Date
 
-  @IsString()
-  @IsOptional()
-  readonly profile: string | null
-
   constructor(partial: Partial<UserEntity>) {
     Object.assign(this, partial)
   }

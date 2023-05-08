@@ -10,7 +10,6 @@ export class AccessTokenPayload extends PickType(TokenEntity, [
   readonly type: 'access_token'
 
   readonly username: string
-  readonly profile: string | null
 }
 
 export class RefreshTokenPayload extends PickType(TokenEntity, [
