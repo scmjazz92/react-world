@@ -7,11 +7,10 @@ import {
 } from './tokens'
 
 const getUserFromAccessToken = (token: AccessTokenPayload): User => {
-  const { userId, username, profile } = token
+  const { userId, username } = token
   return {
     id: userId,
     username: username,
-    profile: profile,
   }
 }
 

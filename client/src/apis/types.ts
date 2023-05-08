@@ -1,7 +1,6 @@
 export interface User {
   id: number
   username: string
-  profile: string | null
 }
 
 export interface Tokens {
@@ -50,5 +49,15 @@ export interface ArticleResult {
   updatedAt: Date
   isLiked: boolean
   user: User
+  articleStats: ArticleStats
+}
+
+export interface ArticlesResult {
+  list: ArticleResult[]
+}
+
+export interface LikeResult {
+  id: number
+  isLiked: boolean
   articleStats: ArticleStats
 }

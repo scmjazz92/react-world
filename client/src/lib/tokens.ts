@@ -5,7 +5,6 @@ export interface AccessTokenPayload {
   type: 'access_token'
   userId: number
   username: string
-  profile: string | null
 }
 
 export interface RefreshTokenPayload {
