@@ -18,6 +18,9 @@ const validate = {
     const result = keys.find((key) => !data[key])
     return result ?? null
   },
+  isInteger(value?: number) {
+    return Number.isInteger(value)
+  },
 }
 
 export default validate

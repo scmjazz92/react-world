@@ -15,6 +15,7 @@ const queryClient = new QueryClient({
 
 export const QUERY_KEYS = {
   REFRESH: 'refresh',
+  ARTICLES: 'articles',
 }
 
 export default queryClient

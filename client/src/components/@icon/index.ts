@@ -1,6 +1,8 @@
 export { default as Album } from './Album'
 export { default as ArrowLeft } from './ArrowLeft'
 export { default as Home } from './Home'
+export { default as Like } from './Like'
 export { default as Search } from './Search'
 export { default as Setting } from './Setting'
+export { default as Unlike } from './Unlike'
 export { default as Write } from './Write'
