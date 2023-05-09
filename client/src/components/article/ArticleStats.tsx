@@ -12,10 +12,10 @@ const ArticleStats = ({ likes, views, commentsCount }: Partial<Props>) => {
       {validate.isInteger(likes) && (
         <span className="count">좋아요 {likes}개</span>
       )}
-      {validate.isInteger(views) && (
+      {validate.isInteger(commentsCount) && (
         <span className="count">댓글 {commentsCount}개</span>
       )}
-      {validate.isInteger(commentsCount) && (
+      {validate.isInteger(views) && (
         <span className="count">조회수 {views}</span>
       )}
     </div>
