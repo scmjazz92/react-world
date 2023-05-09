@@ -16,8 +16,35 @@ const Article = {
     return response.data
   },
 
+  async get(articlesId: number) {
+    const response = await client.get<ArticleResult>(`/articles/${articlesId}`)
+    return response.data
+  },
+
   async getAll() {
     const response = await client.get<ArticlesResult>(`/articles`)
+    return response.data
+  },
+
+  async delete(articleId: number) {
+    const response = await client.delete(`/articles/${articleId}`)
+    return response.data
+  },
+
+  async update({
+    title,
+    body,
+    articleId,
+    thumbnail,
+  }: ArticleParams & { articleId: number }) {
+    const response = await client.patch<ArticleResult>(
+      `/articles/${articleId}`,
+      {
+        title,
+        body,
+        thumbnail,
+      },
+    )
     return response.data
   },
 

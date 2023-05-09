@@ -7,9 +7,16 @@ interface Props {
   rootRef: RefObject<HTMLDivElement>
   editorRef: RefObject<HTMLDivElement>
   options?: ReactNode
+  defaultValue?: ReactNode
 }
 
-const Editor = ({ rootRef, editorRef, options, label }: Props) => {
+const Editor = ({
+  rootRef,
+  editorRef,
+  options,
+  label,
+  defaultValue,
+}: Props) => {
   return (
     <div css={container} ref={rootRef}>
       <div css={top}>
@@ -22,6 +29,7 @@ const Editor = ({ rootRef, editorRef, options, label }: Props) => {
         contentEditable
         suppressContentEditableWarning={true}
         translate="no"
+        dangerouslySetInnerHTML={{ __html: defaultValue ?? '' }}
       ></div>
     </div>
   )
