@@ -38,7 +38,8 @@ const ArticleItem = ({ article }: Props) => {
   const isLiked = item?.isLiked ?? article.isLiked
   const likes = item?.articleStats.likes ?? articleStats.likes
   const views = item?.articleStats.views ?? articleStats.views
-  const commentsCount = item?.articleStats.views ?? articleStats.commentsCount
+  const commentsCount =
+    item?.articleStats.commentsCount ?? articleStats.commentsCount
 
   const handleToggleLike = () => {
     if (!currentUser) {
