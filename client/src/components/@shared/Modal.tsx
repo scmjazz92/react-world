@@ -24,7 +24,7 @@ const Modal = () => {
 
   const { title, cancelText, confirmText, description } = modal.config
 
-  return modal?.visible ? (
+  return modal.visible ? (
     <div css={overlay} onClick={onClose}>
       <div css={content} onClick={(event) => event.stopPropagation()}>
         {title && <strong className="title">{title}</strong>}
