@@ -30,6 +30,10 @@ const input = css`
   &:focus {
     border-color: ${colors.blue100};
   }
+
+  &: disabled {
+    background: ${colors.grey50};
+  }
 `
 
 const error = css`
