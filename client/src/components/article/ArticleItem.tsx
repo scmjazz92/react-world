@@ -17,9 +17,10 @@ import ArticleStats from './ArticleStats'
 
 interface Props {
   article: ArticleResult
+  path?: string
 }
 
-const ArticleItem = ({ article }: Props) => {
+const ArticleItem = ({ article, path }: Props) => {
   const {
     id,
     title,
@@ -63,7 +64,7 @@ const ArticleItem = ({ article }: Props) => {
 
   return (
     <li css={list}>
-      <Link to={`/articles/${id}`} css={content}>
+      <Link to={path ?? `/articles/${id}`} css={content}>
         <div className="left">
           <strong className="title">{title}</strong>
           <p className="body">{tagExcept(body)}</p>

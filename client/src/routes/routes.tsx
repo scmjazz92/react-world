@@ -7,6 +7,7 @@ const Login = lazy(() => import('../pages/login/index'))
 const Write = lazy(() => import('../pages/write/index'))
 const WriteEdit = lazy(() => import('../pages/write/edit'))
 const ArticleDetail = lazy(() => import('../pages/article/[articleId]'))
+const Search = lazy(() => import('../pages/search/index'))
 
 const ProtectedRoute = lazy(() => import('../routes/ProtectedRoute'))
 const PublicRoute = lazy(() => import('../routes/PublicRoute'))
@@ -34,6 +35,7 @@ const publicRoute: RouteObject[] = [
 const routes: RouteObject[] = [
   { path: '/', element: <Main /> },
   { path: '/articles/:articleId', element: <ArticleDetail /> },
+  { path: '/search', element: <Search /> },
   ...protedRoute,
   ...publicRoute,
 ]
