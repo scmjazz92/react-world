@@ -1,3 +1,5 @@
+import { User } from '../apis/types'
+
 export interface AccessTokenPayload {
   exp: number
   iat: number
@@ -34,4 +36,12 @@ export const remainingTokenExpirationTime = (exp?: number) => {
   if (!exp) return 0
   const time = timeRemaining(new Date(exp * 1000))
   return time > 0 ? time : 0
+}
+
+export const getUserFromAccessToken = (token: AccessTokenPayload): User => {
+  const { userId, username } = token
+  return {
+    id: userId,
+    username: username,
+  }
 }

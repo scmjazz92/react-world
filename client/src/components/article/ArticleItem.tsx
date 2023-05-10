@@ -9,8 +9,8 @@ import colors from '../../lib/colors'
 import { dateFormat, midnightCheck } from '../../lib/dateFormat'
 import { tagExcept } from '../../lib/except'
 import styles from '../../lib/styles'
-import { getUser } from '../../lib/user'
 import { likeItemSelector } from '../../recoils/like'
+import { userState } from '../../recoils/user'
 import LikeButton from '../@shared/LikeButton'
 import Thumbnail from '../@shared/Thumbnail'
 import ArticleStats from './ArticleStats'
@@ -30,7 +30,7 @@ const ArticleItem = ({ article }: Props) => {
     articleStats,
   } = article
 
-  const currentUser = getUser()
+  const currentUser = useRecoilValue(userState)
   const loginModal = useOpenLoginModal()
   const { like, unlike } = useLike(id)
   const item = useRecoilValue(likeItemSelector(id))

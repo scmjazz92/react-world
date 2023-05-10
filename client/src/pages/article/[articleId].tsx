@@ -5,19 +5,20 @@ import useArticle from '../../hooks/apis/article/useArticle'
 import useArticleId from '../../hooks/useArticleId'
 import useGoBack from '../../hooks/useGoBack'
 import ArticleDetailView from '../../components/article/ArticleDetailView'
-import { getUser } from '../../lib/user'
 import MoreButton from '../../components/@shared/MoreButton'
-import { useSetRecoilState } from 'recoil'
+import { useRecoilValue, useSetRecoilState } from 'recoil'
 import { bottomSheetModalSelector } from '../../recoils/bottomSheetModal'
 import { useNavigate } from 'react-router-dom'
 import useDeleteArticle from '../../hooks/apis/article/useDeleteArticle'
+import Comment from '../../components/comment/Comment'
+import { userState } from '../../recoils/user'
 
 const ArticleDetail = () => {
   const goBack = useGoBack()
   const navigate = useNavigate()
   const articleId = useArticleId()!
   const { data: article } = useArticle({ articleId })
-  const currentUser = getUser()
+  const currentUser = useRecoilValue(userState)
   const isMyArticle = currentUser?.id === article?.user.id
   const bottomSheetModal = useSetRecoilState(bottomSheetModalSelector)
   const { mutate: onDeleteArticle } = useDeleteArticle()
@@ -51,6 +52,7 @@ const ArticleDetail = () => {
       right={isMyArticle && <MoreButton onClick={handleBottomSheetModal} />}
     >
       <ArticleDetailView article={article} />
+      <Comment commentsCount={article.articleStats.commentsCount} />
     </BasicLayout>
   )
 }

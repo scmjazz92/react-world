@@ -6,8 +6,8 @@ import useLike from '../../hooks/apis/article/useLike'
 import useOpenLoginModal from '../../hooks/useOpenLoginModal'
 import { dateFormat, midnightCheck } from '../../lib/dateFormat'
 import styles from '../../lib/styles'
-import { getUser } from '../../lib/user'
 import { likeItemSelector } from '../../recoils/like'
+import { userState } from '../../recoils/user'
 import LikeButton from '../@shared/LikeButton'
 import ArticleStats from './ArticleStats'
 
@@ -25,7 +25,7 @@ const ArticleDetailView = ({ article }: Props) => {
     articleStats,
   } = article
 
-  const currentUser = getUser()
+  const currentUser = useRecoilValue(userState)
   const loginModal = useOpenLoginModal()
   const { like, unlike } = useLike(id)
   const item = useRecoilValue(likeItemSelector(id))

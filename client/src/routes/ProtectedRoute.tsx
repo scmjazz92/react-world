@@ -1,19 +1,20 @@
 import React, { useEffect } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
-import { getUser } from '../lib/user'
+import { useRecoilValue } from 'recoil'
+import { userState } from '../recoils/user'
 
 const ProtectedRoute = () => {
   const { pathname } = useLocation()
   const navigate = useNavigate()
-  const user = getUser()
+  const currentUser = useRecoilValue(userState)
 
   useEffect(() => {
-    if (!user) {
+    if (!currentUser) {
       navigate(`/auth/login?next=${pathname}`, { replace: true })
     }
-  }, [user])
+  }, [currentUser])
 
-  if (!user) return null
+  if (!currentUser) return null
 
   return <Outlet />
 }

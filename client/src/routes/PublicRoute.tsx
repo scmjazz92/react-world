@@ -1,18 +1,19 @@
 import React, { useEffect } from 'react'
 import { Outlet } from 'react-router-dom'
+import { useRecoilValue } from 'recoil'
 import useRedirect from '../hooks/useRedirect'
-import { getUser } from '../lib/user'
+import { userState } from '../recoils/user'
 
 const PublicRoute = () => {
   const redirect = useRedirect()
-  const user = getUser()
+  const currentUser = useRecoilValue(userState)
 
   useEffect(() => {
-    if (!user) return
+    if (!currentUser) return
     redirect()
-  }, [user, redirect])
+  }, [currentUser, redirect])
 
-  if (user) return null
+  if (currentUser) return null
 
   return <Outlet />
 }
