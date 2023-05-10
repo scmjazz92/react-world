@@ -35,11 +35,9 @@ const Modal = () => {
               {cancelText || '취소'}
             </Button>
           )}
-          {confirmText && (
-            <Button onClick={onConfirm} className="confirm">
-              {confirmText || '확인'}
-            </Button>
-          )}
+          <Button onClick={onConfirm} className="confirm">
+            {confirmText || '확인'}
+          </Button>
         </div>
       </div>
     </div>
