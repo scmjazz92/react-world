@@ -59,8 +59,8 @@ export class ArticleService {
     return this.serialize(article)
   }
 
-  async getArticles({ userId }: { userId: number }) {
-    const articles = await this.articleRepository.getArticles({ userId })
+  async getArticles({ userId, value }: { userId: number; value?: string }) {
+    const articles = await this.articleRepository.getArticles({ userId, value })
 
     const serializedList = articles.map((article) => {
       return this.serialize(article)

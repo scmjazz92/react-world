@@ -48,8 +48,13 @@ export class ArticleRepository {
     return article
   }
 
-  async getArticles({ userId }: { userId: number }) {
+  async getArticles({ userId, value }: { userId: number; value?: string }) {
     const articles = await this.prisma.article.findMany({
+      where: {
+        OR: value
+          ? [{ title: { contains: value } }, { body: { contains: value } }]
+          : undefined,
+      },
       orderBy: {
         id: 'desc',
       },

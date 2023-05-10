@@ -5,6 +5,7 @@ import { PrismaModule } from './prisma/prisma.module'
 import { AuthModule } from './routes/auth/auth.module'
 import { ArticleModule } from './routes/article/article.module'
 import { UploadModule } from './routes/upload/upload.module'
+import { SearchModule } from './routes/search/search.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { UploadModule } from './routes/upload/upload.module'
     AuthModule,
     ArticleModule,
     UploadModule,
+    SearchModule,
   ],
 })
 export class AppModule implements NestModule {
