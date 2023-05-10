@@ -34,8 +34,9 @@ const ArticleDetail = () => {
           {
             text: '삭제',
             onClick: () => {
-              onDeleteArticle(articleId)
-              navigate('/')
+              onDeleteArticle(articleId, {
+                onSuccess: () => redirect(),
+              })
             },
           },
         ],
