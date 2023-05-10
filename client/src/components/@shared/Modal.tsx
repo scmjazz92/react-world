@@ -73,6 +73,11 @@ const content = css`
     padding-bottom: 20px;
   }
 
+  .description {
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
   .buttons {
     padding-top: 30px;
     display: flex;
