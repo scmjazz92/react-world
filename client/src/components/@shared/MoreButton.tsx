@@ -15,6 +15,8 @@ const MoreButton = ({ onClick, ...rest }: Props) => {
 }
 
 const button = css`
+  height: 24px;
+
   & svg {
     width: 24px;
     height: 24px;

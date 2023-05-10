@@ -61,3 +61,20 @@ export interface LikeResult {
   isLiked: boolean
   articleStats: ArticleStats
 }
+
+export interface CommentParams {
+  text: string
+  articleId: number
+}
+
+export interface CommentResult {
+  id: number
+  text: string
+  createdAt: Date
+  updatedAt: Date
+  user: User
+}
+
+export interface CommentsResult {
+  list: CommentResult[]
+}

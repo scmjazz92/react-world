@@ -3,7 +3,6 @@ import BasicLayout from '../../components/@layout/BasicLayout'
 import HeaderBackButton from '../../components/header/HeaderBackButton'
 import useArticle from '../../hooks/apis/article/useArticle'
 import useArticleId from '../../hooks/useArticleId'
-import useGoBack from '../../hooks/useGoBack'
 import ArticleDetailView from '../../components/article/ArticleDetailView'
 import MoreButton from '../../components/@shared/MoreButton'
 import { useRecoilValue, useSetRecoilState } from 'recoil'
@@ -12,9 +11,10 @@ import { useNavigate } from 'react-router-dom'
 import useDeleteArticle from '../../hooks/apis/article/useDeleteArticle'
 import Comment from '../../components/comment/Comment'
 import { userState } from '../../recoils/user'
+import useRedirect from '../../hooks/useRedirect'
 
 const ArticleDetail = () => {
-  const goBack = useGoBack()
+  const redirect = useRedirect()
   const navigate = useNavigate()
   const articleId = useArticleId()!
   const { data: article } = useArticle({ articleId })
@@ -48,7 +48,7 @@ const ArticleDetail = () => {
 
   return (
     <BasicLayout
-      left={<HeaderBackButton onClick={goBack} />}
+      left={<HeaderBackButton onClick={redirect} />}
       right={isMyArticle && <MoreButton onClick={handleBottomSheetModal} />}
     >
       <ArticleDetailView article={article} />

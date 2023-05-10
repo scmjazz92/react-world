@@ -3,6 +3,9 @@ import {
   ArticleParams,
   ArticleResult,
   ArticlesResult,
+  CommentParams,
+  CommentResult,
+  CommentsResult,
   LikeResult,
 } from './types'
 
@@ -58,6 +61,46 @@ const Article = {
   async unlike(articleId: number) {
     const response = await client.delete<LikeResult>(
       `/articles/${articleId}/likes`,
+    )
+    return response.data
+  },
+
+  async getComments(articleId: number) {
+    const response = await client.get<CommentsResult>(
+      `/articles/${articleId}/comments`,
+    )
+    return response.data
+  },
+
+  async createComment({ text, articleId }: CommentParams) {
+    const response = await client.post<CommentResult>(
+      `/articles/${articleId}/comments`,
+      { text },
+    )
+    return response.data
+  },
+
+  async updateComment({
+    text,
+    articleId,
+    commentId,
+  }: CommentParams & { commentId: number }) {
+    const response = await client.patch<CommentResult>(
+      `/articles/${articleId}/comments/${commentId}`,
+      { text },
+    )
+    return response.data
+  },
+
+  async deleteComment({
+    articleId,
+    commentId,
+  }: {
+    articleId: number
+    commentId: number
+  }) {
+    const response = await client.delete(
+      `/articles/${articleId}/comments/${commentId}`,
     )
     return response.data
   },
