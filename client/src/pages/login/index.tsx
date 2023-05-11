@@ -21,7 +21,10 @@ const Login = () => {
         setUser(user)
         redirect()
       },
-      onError: () => form.reset(),
+      onError: () => {
+        form.reset()
+        form.blur()
+      },
     })
 
   return (
