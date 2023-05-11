@@ -16,6 +16,9 @@ export class ArticleResult extends ArticleEntity {
   @Exclude({ toPlainOnly: true })
   readonly articleLike: Partial<ArticleLikeEntity>[]
 
+  @Exclude({ toPlainOnly: true })
+  readonly comment: Partial<CommentEntity>[]
+
   constructor(partial: Partial<ArticleResult>) {
     super(partial)
     this.user = new UserEntity(partial.user)

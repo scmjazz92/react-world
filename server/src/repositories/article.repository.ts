@@ -40,6 +40,7 @@ export class ArticleRepository {
       },
       include: {
         user: true,
+        comment: true,
         articleStats: true,
         articleLike: userId ? { where: { userId } } : false,
       },
@@ -60,6 +61,7 @@ export class ArticleRepository {
       },
       include: {
         user: true,
+        comment: true,
         articleStats: true,
         articleLike: userId ? { where: { userId } } : false,
       },

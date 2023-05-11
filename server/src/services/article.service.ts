@@ -1,22 +1,34 @@
 import { Injectable } from '@nestjs/common'
-import { Article, ArticleLike, ArticleStats, User } from '@prisma/client'
+import {
+  Article,
+  ArticleLike,
+  ArticleStats,
+  Comment,
+  User,
+} from '@prisma/client'
 import { AppError } from 'src/lib/error'
 import { ArticleRepository } from 'src/repositories/article.repository'
 import { ArticleBodyDto } from 'src/routes/article/dtos/article.body.dto'
+
+type SerializeArticle = Article & {
+  user: User
+  articleLike: ArticleLike[]
+  articleStats: ArticleStats
+  comment: Comment[]
+}
 
 @Injectable()
 export class ArticleService {
   constructor(private readonly articleRepository: ArticleRepository) {}
 
-  private serialize(
-    article: Article & {
-      user: User
-      articleLike: ArticleLike[]
-      articleStats: ArticleStats
-    },
-  ) {
+  private serialize(article: SerializeArticle) {
     return {
       ...article,
+      articleStats: {
+        ...article.articleStats,
+        commentsCount: article.comment.length,
+        likes: article.articleLike?.length ?? 0,
+      },
       isLiked: !!article.articleLike?.length,
     }
   }
@@ -56,6 +68,7 @@ export class ArticleService {
       throw new AppError('NotFound')
     }
     await this.articleRepository.updateArticleView(articleId)
+
     return this.serialize(article)
   }
 
