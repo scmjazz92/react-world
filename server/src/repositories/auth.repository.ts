@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { PrismaService } from 'src/prisma/prisma.service'
+import { ChangePasswordDto } from 'src/routes/auth/dtos/change.password.dto'
 import { UserBodyDto } from 'src/routes/auth/dtos/user.body.dto'
 
 @Injectable()
@@ -10,6 +11,15 @@ export class AuthRepository {
     const exists = await this.prisma.user.findUnique({
       where: {
         username,
+      },
+    })
+    return exists
+  }
+
+  async existsByUser(userId: number) {
+    const exists = await this.prisma.user.findUnique({
+      where: {
+        id: userId,
       },
     })
     return exists
@@ -56,5 +66,27 @@ export class AuthRepository {
       },
     })
     return tokenItem
+  }
+
+  async changePassword({
+    changePassword,
+    userId,
+  }: Pick<ChangePasswordDto, 'changePassword'> & { userId: number }) {
+    await this.prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        password: changePassword,
+      },
+    })
+  }
+
+  async unRegister(userId: number) {
+    await this.prisma.user.delete({
+      where: {
+        id: userId,
+      },
+    })
   }
 }

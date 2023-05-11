@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common'
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+} from '@nestjs/common'
 import { AuthRepository } from 'src/repositories/auth.repository'
 import { UserBodyDto } from 'src/routes/auth/dtos/user.body.dto'
 import * as bcrypt from 'bcrypt'
@@ -6,6 +10,8 @@ import { AppError } from 'src/lib/error'
 import { JwtService } from './jwt.service'
 import { Token, User } from '@prisma/client'
 import { RefreshTokenPayload } from 'src/routes/auth/schema'
+import { ChangePasswordDto } from 'src/routes/auth/dtos/change.password.dto'
+import validate from 'src/lib/validate'
 
 @Injectable()
 export class AuthService {
@@ -105,5 +111,40 @@ export class AuthService {
     } catch (e) {
       throw new AppError('RefreshFailure')
     }
+  }
+
+  async changePassword({
+    currentPassword,
+    changePassword,
+    userId,
+  }: ChangePasswordDto & { userId: number }) {
+    const user = await this.authRepository.existsByUser(userId)
+
+    if (!validate.password(changePassword)) {
+      throw new BadRequestException('Password is invalid')
+    }
+
+    try {
+      if (!user) {
+        throw new Error()
+      }
+
+      const result = await bcrypt.compare(currentPassword, user.password)
+      if (!result) {
+        throw new Error()
+      }
+    } catch (e) {
+      throw new ForbiddenException('Password does not match')
+    }
+
+    const newPassword = await bcrypt.hash(changePassword, 10)
+    await this.authRepository.changePassword({
+      changePassword: newPassword,
+      userId,
+    })
+  }
+
+  async unRegister(userId: number) {
+    await this.authRepository.unRegister(userId)
   }
 }
