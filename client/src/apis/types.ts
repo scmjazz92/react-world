@@ -83,3 +83,10 @@ export interface CommentResult {
 export interface CommentsResult {
   list: CommentResult[]
 }
+
+export type StoryMode = 'user' | 'like'
+
+export interface StoryParams {
+  username: string
+  mode: StoryMode
+}
