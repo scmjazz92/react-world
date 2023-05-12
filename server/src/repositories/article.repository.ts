@@ -70,6 +70,56 @@ export class ArticleRepository {
     return articles
   }
 
+  async getUserArticles({
+    userId,
+    username,
+  }: {
+    userId: number
+    username?: string
+  }) {
+    const articles = await this.prisma.article.findMany({
+      where: {
+        user: {
+          username,
+        },
+      },
+      orderBy: {
+        id: 'desc',
+      },
+      include: {
+        user: true,
+        comment: true,
+        articleStats: true,
+        articleLike: userId ? { where: { userId } } : false,
+      },
+    })
+
+    return articles
+  }
+
+  async getLikeArticles({ userId }: { userId: number }) {
+    const articles = await this.prisma.article.findMany({
+      where: {
+        articleLike: {
+          some: {
+            userId,
+          },
+        },
+      },
+      orderBy: {
+        id: 'desc',
+      },
+      include: {
+        user: true,
+        comment: true,
+        articleStats: true,
+        articleLike: userId ? { where: { userId } } : false,
+      },
+    })
+
+    return articles
+  }
+
   async deleteArticle(articleId: number) {
     await this.prisma.article.delete({
       where: {

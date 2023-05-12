@@ -1,3 +1,4 @@
+import { AuthRepository } from 'src/repositories/auth.repository'
 import { Injectable } from '@nestjs/common'
 import {
   Article,
@@ -7,6 +8,7 @@ import {
   User,
 } from '@prisma/client'
 import { AppError } from 'src/lib/error'
+import { ArticlesMode } from 'src/lib/types'
 import { ArticleRepository } from 'src/repositories/article.repository'
 import { ArticleBodyDto } from 'src/routes/article/dtos/article.body.dto'
 
@@ -19,7 +21,10 @@ type SerializeArticle = Article & {
 
 @Injectable()
 export class ArticleService {
-  constructor(private readonly articleRepository: ArticleRepository) {}
+  constructor(
+    private readonly articleRepository: ArticleRepository,
+    private readonly authRepository: AuthRepository,
+  ) {}
 
   private serialize(article: SerializeArticle) {
     return {
@@ -72,11 +77,83 @@ export class ArticleService {
     return this.serialize(article)
   }
 
-  async getArticles({ userId, value }: { userId: number; value?: string }) {
-    const articles = await this.articleRepository.getArticles({ userId, value })
+  async getArticles({
+    userId,
+    value,
+    mode = 'user',
+    username,
+  }: {
+    userId: number
+    value?: string
+    mode?: ArticlesMode
+    username?: string
+  }) {
+    if (mode === 'user') {
+      return this.getUserArticles({ username, userId })
+    }
+
+    if (mode === 'like') {
+      return this.getLikeArticles({ username, userId })
+    }
+
+    const articles = await this.articleRepository.getArticles({
+      userId,
+      value,
+    })
 
     const serializedList = articles.map((article) => {
       return this.serialize(article)
+    })
+
+    return {
+      list: serializedList,
+    }
+  }
+
+  async getUserArticles({
+    username,
+    userId,
+  }: {
+    username: string
+    userId: number
+  }) {
+    const user = await this.authRepository.existsByUsername(username)
+    if (!user) {
+      throw new AppError('NotFound')
+    }
+
+    const userArticles = await this.articleRepository.getUserArticles({
+      username,
+      userId,
+    })
+
+    const serializedList = userArticles.map((article) => {
+      return this.serialize(article)
+    })
+
+    return {
+      list: serializedList,
+    }
+  }
+
+  async getLikeArticles({
+    username,
+    userId,
+  }: {
+    username: string
+    userId: number
+  }) {
+    const user = await this.authRepository.existsByUsername(username)
+    if (!user) {
+      throw new AppError('NotFound')
+    }
+
+    const userArticles = await this.articleRepository.getLikeArticles({
+      userId,
+    })
+
+    const serializedList = userArticles.map((article) => {
+      return { ...this.serialize(article), isLiked: true }
     })
 
     return {

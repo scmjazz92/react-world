@@ -6,6 +6,7 @@ import { AuthModule } from './routes/auth/auth.module'
 import { ArticleModule } from './routes/article/article.module'
 import { UploadModule } from './routes/upload/upload.module'
 import { SearchModule } from './routes/search/search.module';
+import { StoryModule } from './routes/story/story.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { SearchModule } from './routes/search/search.module';
     ArticleModule,
     UploadModule,
     SearchModule,
+    StoryModule,
   ],
 })
 export class AppModule implements NestModule {
