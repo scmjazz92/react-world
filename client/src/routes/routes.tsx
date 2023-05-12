@@ -8,6 +8,8 @@ const Write = lazy(() => import('../pages/write/index'))
 const WriteEdit = lazy(() => import('../pages/write/edit'))
 const ArticleDetail = lazy(() => import('../pages/article/[articleId]'))
 const Search = lazy(() => import('../pages/search/index'))
+const Setting = lazy(() => import('../pages/setting/index'))
+const MyPage = lazy(() => import('../pages/setting/mypage'))
 
 const ProtectedRoute = lazy(() => import('../routes/ProtectedRoute'))
 const PublicRoute = lazy(() => import('../routes/PublicRoute'))
@@ -18,6 +20,8 @@ const protedRoute: RouteObject[] = [
     children: [
       { path: '/write', element: <Write /> },
       { path: '/write/edit', element: <WriteEdit /> },
+      { path: '/setting', element: <Setting /> },
+      { path: '/setting/mypage', element: <MyPage /> },
     ],
   },
 ]

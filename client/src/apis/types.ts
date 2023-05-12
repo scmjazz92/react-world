@@ -18,6 +18,11 @@ export interface AuthResult {
   tokens: Tokens
 }
 
+export interface ChangePasswordParams {
+  changePassword: string
+  currentPassword: string
+}
+
 export interface UploadParams {
   formData: FormData
   path: string

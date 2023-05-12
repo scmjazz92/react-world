@@ -1,5 +1,5 @@
 import client from '../lib/client'
-import { AuthParams, AuthResult, Tokens, User } from './types'
+import { AuthParams, AuthResult, ChangePasswordParams, Tokens } from './types'
 
 const Auth = {
   async register({ username, password }: AuthParams) {
@@ -27,6 +27,22 @@ const Auth = {
         : undefined,
     })
 
+    return response.data
+  },
+
+  async changePassword({
+    currentPassword,
+    changePassword,
+  }: ChangePasswordParams) {
+    const response = await client.post('/auth/change-password', {
+      currentPassword,
+      changePassword,
+    })
+    return response.data
+  },
+
+  async unRegister() {
+    const response = await client.delete('/auth')
     return response.data
   },
 }
