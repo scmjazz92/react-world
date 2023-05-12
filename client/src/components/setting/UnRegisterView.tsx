@@ -37,7 +37,7 @@ const UnRegisterView = () => {
   return (
     <div css={container}>
       <p css={description}>
-        회원 탈퇴 시 모든 내 스토리와 댓글은 삭제되지 않습니다.
+        회원 탈퇴 시 모든 내 스토리와 댓글은 삭제됩니다.
         <br />
         삭제된 후에는 복구가 되지 않으니 신중하게 탈퇴하시기를 부탁드립니다.
       </p>
