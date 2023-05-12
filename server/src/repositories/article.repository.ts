@@ -97,12 +97,18 @@ export class ArticleRepository {
     return articles
   }
 
-  async getLikeArticles({ userId }: { userId: number }) {
+  async getLikeArticles({
+    userId,
+    userArticleId,
+  }: {
+    userId: number
+    userArticleId: number
+  }) {
     const articles = await this.prisma.article.findMany({
       where: {
         articleLike: {
           some: {
-            userId,
+            userId: userArticleId,
           },
         },
       },

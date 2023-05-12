@@ -80,7 +80,7 @@ export class ArticleService {
   async getArticles({
     userId,
     value,
-    mode = 'user',
+    mode,
     username,
   }: {
     userId: number
@@ -150,10 +150,11 @@ export class ArticleService {
 
     const userArticles = await this.articleRepository.getLikeArticles({
       userId,
+      userArticleId: user.id,
     })
 
     const serializedList = userArticles.map((article) => {
-      return { ...this.serialize(article), isLiked: true }
+      return { ...this.serialize(article) }
     })
 
     return {
