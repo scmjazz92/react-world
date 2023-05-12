@@ -23,7 +23,9 @@ const Login = () => {
       },
       onError: () => {
         form.reset()
-        form.blur()
+        if (document.activeElement instanceof HTMLElement) {
+          document.activeElement.blur()
+        }
       },
     })
 

@@ -21,7 +21,12 @@ const Register = () => {
         setUser(user)
         navigate('/')
       },
-      onError: () => form.reset(),
+      onError: () => {
+        form.reset()
+        if (document.activeElement instanceof HTMLElement) {
+          document.activeElement.blur()
+        }
+      },
     })
 
   return (
