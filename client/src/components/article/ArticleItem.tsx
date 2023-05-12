@@ -75,7 +75,9 @@ const ArticleItem = ({ article, path }: Props) => {
       <div css={info}>
         <LikeButton isLiked={isLiked} onClick={handleToggleLike} />
         <div>
-          <span className="username">{username}</span>
+          <Link to={`/story/${username}`} className="username">
+            {username}
+          </Link>
           <span className="date">{date}</span>
         </div>
       </div>

@@ -6,9 +6,10 @@ import ArticleItem from '../article/ArticleItem'
 interface Props {
   username: string
   mode: StoryMode
+  nextPath?: string
 }
 
-const StoryList = ({ username, mode }: Props) => {
+const StoryList = ({ username, mode, nextPath }: Props) => {
   const { data: storyArticles } = useStoryArticles({ username, mode })
 
   if (!storyArticles) return null
@@ -16,7 +17,11 @@ const StoryList = ({ username, mode }: Props) => {
   return (
     <ul>
       {storyArticles.list.map((article) => (
-        <ArticleItem key={article.id} article={article} />
+        <ArticleItem
+          key={article.id}
+          article={article}
+          path={`/articles/${article.id}?next=/story/${username}?mode=${mode}${nextPath}`}
+        />
       ))}
     </ul>
   )

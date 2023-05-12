@@ -16,9 +16,9 @@ const Setting = () => {
   return (
     <BasicLayout title="설정" footer={<Footer />}>
       <div css={block}>
-        <SettingLinkItem to="/setting/mypage" text="마이페이지" />
+        <SettingLinkItem to="/setting/mypage?next=/setting" text="마이페이지" />
         <SettingLinkItem
-          to={`/story/${currentUser?.username}`}
+          to={`/story/${currentUser?.username}?next=/setting`}
           text="내 스토리"
         />
         <SettingButtonItem text="로그아웃" onClick={onLogout} />
