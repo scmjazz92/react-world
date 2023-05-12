@@ -21,6 +21,7 @@ const container = css`
   min-height: 42px;
   border-bottom: 1px solid ${colors.grey100};
   z-index: 10;
+  background: ${colors.white};
 `
 
 export default TabFlexMode
