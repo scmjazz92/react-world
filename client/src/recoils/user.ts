@@ -20,16 +20,21 @@ export const getUser = () => {
   return initialData ?? null
 }
 
+const userStateEffect =
+  () =>
+  ({ setSelf }: any) =>
+    setSelf(() => getUser())
+
 export const userState = atom<User | null>({
   key: 'userState',
-  default: getUser(),
+  default: null,
+  effects: [userStateEffect()],
 })
 
 export const userSelector = selector<User | null>({
   key: 'userSelector',
   get: ({ get }) => {
-    const items = get(userState)
-    return items
+    return get(userState)
   },
   set: ({ set }, newValue) => {
     if (newValue instanceof DefaultValue || !newValue) return
