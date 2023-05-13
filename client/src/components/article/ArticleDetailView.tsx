@@ -1,5 +1,6 @@
 import { css } from '@emotion/react'
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { useRecoilValue } from 'recoil'
 import { ArticleResult } from '../../apis/types'
 import useLike from '../../hooks/apis/article/useLike'
@@ -65,7 +66,9 @@ const ArticleDetailView = ({ article }: Props) => {
         <div css={block}>
           <LikeButton isLiked={isLiked} onClick={handleToggleLike} />
           <div className="left">
-            <span className="username">{username}</span>
+            <Link to={`/story/${username}`} className="username">
+              {username}
+            </Link>
             <span className="date">{date}</span>
           </div>
         </div>
