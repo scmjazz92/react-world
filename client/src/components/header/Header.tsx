@@ -1,6 +1,10 @@
 import { css } from '@emotion/react'
 import React, { ReactNode } from 'react'
+import { Link } from 'react-router-dom'
+import useMediaQuery from '../../hooks/useMediaQuery'
 import colors from '../../lib/colors'
+import { mediaQuery } from '../../lib/mediaQuery'
+import HeaderDesktopUtils from './HeaderDesktopUtils'
 
 export interface Props {
   title?: string
@@ -9,11 +13,22 @@ export interface Props {
 }
 
 const Header = ({ title = 'world', left, right }: Props) => {
+  const { isMobile } = useMediaQuery()
+
   return (
     <header css={header}>
-      <h1>{title}</h1>
+      <h1>
+        {isMobile ? (
+          title
+        ) : (
+          <Link className="desktop" to="/">
+            world
+          </Link>
+        )}
+      </h1>
       {left && <div css={side('left')}>{left}</div>}
       {right && <div css={side('right')}>{right}</div>}
+      <HeaderDesktopUtils />
     </header>
   )
 }
@@ -21,7 +36,6 @@ const Header = ({ title = 'world', left, right }: Props) => {
 const header = css`
   position: relative;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   min-height: 56px;
@@ -30,6 +44,14 @@ const header = css`
   & > h1 {
     font-size: 20px;
     color: ${colors.black};
+  }
+
+  ${mediaQuery.tablet} {
+    padding: 0 16px;
+
+    & > h1 {
+      margin-right: auto;
+    }
   }
 `
 
@@ -43,6 +65,10 @@ const side = (position: 'left' | 'right') => css`
     display: block;
     height: 100%;
     padding: 0 16px;
+  }
+
+  ${mediaQuery.tablet}{
+    display: none;
   }
 `
 

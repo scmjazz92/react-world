@@ -1,6 +1,7 @@
 import { css } from '@emotion/react'
 import React from 'react'
 import colors from '../../lib/colors'
+import { mediaQuery } from '../../lib/mediaQuery'
 import FooterItem from './FooterItem'
 
 const Footer = () => {
@@ -20,6 +21,10 @@ const block = css`
   display: flex;
   height: 50px;
   border-top: 1px solid ${colors.grey100};
+
+  ${mediaQuery.tablet} {
+    display: none;
+  }
 `
 
 export default Footer

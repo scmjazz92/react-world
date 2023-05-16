@@ -1,6 +1,7 @@
 import { css } from '@emotion/react'
 import React, { HTMLAttributes, ReactNode } from 'react'
 import colors from '../../lib/colors'
+import styles from '../../lib/styles'
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode

@@ -3,6 +3,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useResetRecoilState, useSetRecoilState } from 'recoil'
 import useUnRegister from '../../hooks/apis/auth/useUnRegister'
+import { mediaQuery } from '../../lib/mediaQuery'
 import styles from '../../lib/styles'
 import { modalSelector } from '../../recoils/modal'
 import { userState } from '../../recoils/user'
@@ -51,6 +52,12 @@ const container = css`
   flex-direction: column;
   flex: 1;
   ${styles.padding}
+
+  ${mediaQuery.tablet} {
+    width: 600px;
+    margin: 0 auto;
+    justify-content: center;
+  }
 `
 
 const description = css`
@@ -60,6 +67,11 @@ const description = css`
   font-size: 14px;
   line-height: 1.6;
   font-weight: bold;
+
+  ${mediaQuery.tablet} {
+    flex: 0;
+    margin-bottom: 20px;
+  }
 `
 
 export default UnRegisterView

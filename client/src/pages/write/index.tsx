@@ -1,10 +1,12 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import BasicLayout from '../../components/@layout/BasicLayout'
+import BlindHeading from '../../components/@shared/BlindHeading'
 import HeaderBackButton from '../../components/header/HeaderBackButton'
 import WriteForm from '../../components/write/WriteForm'
 import useCreateArticle from '../../hooks/apis/article/useCreateArticle'
 import useUpload from '../../hooks/apis/upload/useUpload'
+import useMediaQuery from '../../hooks/useMediaQuery'
 import useRedirect from '../../hooks/useRedirect'
 
 export interface WriteFormSubmitParams {
@@ -15,6 +17,7 @@ export interface WriteFormSubmitParams {
 }
 
 const Write = () => {
+  const { isMobile } = useMediaQuery()
   const navigate = useNavigate()
   const redirect = useRedirect()
   const { mutate: onCreateArticle } = useCreateArticle()
@@ -46,11 +49,14 @@ const Write = () => {
     )
   }
 
+  console.log(isMobile)
+
   return (
     <BasicLayout
       title="새 글 등록"
       left={<HeaderBackButton onClick={redirect} />}
     >
+      {!isMobile && <BlindHeading heading="새 글 작성" level={2} />}
       <WriteForm submit={onSubmit} />
     </BasicLayout>
   )

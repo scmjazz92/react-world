@@ -1,4 +1,5 @@
 import { css } from '@emotion/react'
+import { mediaQuery } from './mediaQuery'
 
 const styles = {
   padding: css`
@@ -21,6 +22,13 @@ const styles = {
       -webkit-box-orient: vertical;
     `
   },
+  desktopInner: css`
+    ${mediaQuery.tablet} {
+      max-width: 768px;
+      width: 100%;
+      margin: 0 auto;
+    }
+  `,
 }
 
 export default styles

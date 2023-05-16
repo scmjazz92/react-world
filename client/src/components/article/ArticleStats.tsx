@@ -25,7 +25,6 @@ const ArticleStats = ({ likes, views, commentsCount }: Partial<Props>) => {
 const stats = css`
   display: flex;
   align-items: center;
-  padding-top: 20px;
   padding-bottom: 16px;
   color: ${colors.grey300};
 

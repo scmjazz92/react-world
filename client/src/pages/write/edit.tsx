@@ -2,14 +2,17 @@ import React from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { WriteFormSubmitParams } from '.'
 import BasicLayout from '../../components/@layout/BasicLayout'
+import BlindHeading from '../../components/@shared/BlindHeading'
 import HeaderBackButton from '../../components/header/HeaderBackButton'
 import WriteForm from '../../components/write/WriteForm'
 import useArticle from '../../hooks/apis/article/useArticle'
 import useUpdateArticle from '../../hooks/apis/article/useUpdateArticle'
 import useUpload from '../../hooks/apis/upload/useUpload'
 import useGoBack from '../../hooks/useGoBack'
+import useMediaQuery from '../../hooks/useMediaQuery'
 
 const WriteEdit = () => {
+  const { isMobile } = useMediaQuery()
   const goBack = useGoBack()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
@@ -49,6 +52,7 @@ const WriteEdit = () => {
 
   return (
     <BasicLayout title="수정" left={<HeaderBackButton onClick={goBack} />}>
+      {!isMobile && <BlindHeading heading="수정" level={2} />}
       <WriteForm submit={onSubmit} defaultValue={article} />
     </BasicLayout>
   )

@@ -1,5 +1,6 @@
 import { css } from '@emotion/react'
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { useRecoilValue, useSetRecoilState } from 'recoil'
 import { CommentResult } from '../../apis/types'
 import useDeleteComment from '../../hooks/apis/article/useDeleteComment'
@@ -7,6 +8,7 @@ import { dateFormat } from '../../lib/dateFormat'
 import { bottomSheetModalSelector } from '../../recoils/bottomSheetModal'
 import { userState } from '../../recoils/user'
 import MoreButton from '../@shared/MoreButton'
+import DesktopMyCommentAction from './DesktopMyCommentAction'
 import EditComment from './EditComment'
 
 interface Props {
@@ -64,15 +66,23 @@ const CommentItem = ({ comment, articleId }: Props) => {
     <li css={list}>
       <div css={info}>
         <div>
-          <span className="username">{username}</span>
+          <Link to={`/story/${username}`} className="username">
+            {username}
+          </Link>
           <span className="date">{date}</span>
         </div>
         {isMyComment && (
-          <MoreButton
-            onClick={() =>
-              handleBottomSheetModal({ articleId, commentId: comment.id })
-            }
-          />
+          <>
+            <MoreButton
+              onClick={() =>
+                handleBottomSheetModal({ articleId, commentId: comment.id })
+              }
+            />
+            <DesktopMyCommentAction
+              onEdit={() => setIsEditComment(true)}
+              onDelete={() => onDeleteComment({ articleId, commentId })}
+            />
+          </>
         )}
       </div>
       {isEditComment ? (

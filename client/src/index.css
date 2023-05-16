@@ -4,6 +4,7 @@
   box-sizing: border-box;
   -webkit-text-size-adjust: none;
   line-height: 1;
+  font-family: 'Arial';
 }
 
 html,

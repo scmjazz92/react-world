@@ -1,5 +1,6 @@
 import { css } from '@emotion/react'
 import React, { FormHTMLAttributes, ReactNode } from 'react'
+import { mediaQuery } from '../../lib/mediaQuery'
 import styles from '../../lib/styles'
 
 interface Props extends FormHTMLAttributes<HTMLFormElement> {
@@ -21,12 +22,22 @@ const form = css`
   flex-direction: column;
   flex: 1;
   ${styles.padding}
+
+  ${mediaQuery.tablet} {
+    width: 600px;
+    margin: 0 auto;
+    justify-content: center;
+  }
 `
 
 const top = css`
   display: flex;
   flex-direction: column;
   flex: 1;
+
+  ${mediaQuery.tablet} {
+    flex: 0;
+  }
 `
 
 const bottom = css`

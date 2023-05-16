@@ -1,6 +1,7 @@
 import { css } from '@emotion/react'
 import React, { ReactNode, RefObject } from 'react'
 import colors from '../../lib/colors'
+import { mediaQuery } from '../../lib/mediaQuery'
 
 interface Props {
   label?: string
@@ -43,6 +44,10 @@ const container = css`
 
   &:not(:first-of-type) {
     padding-top: 20px;
+  }
+
+  ${mediaQuery.tablet} {
+    min-height: 400px;
   }
 `
 

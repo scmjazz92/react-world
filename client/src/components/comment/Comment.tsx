@@ -1,6 +1,7 @@
 import { css } from '@emotion/react'
 import React, { useRef } from 'react'
 import colors from '../../lib/colors'
+import { mediaQuery } from '../../lib/mediaQuery'
 import styles from '../../lib/styles'
 import CommentList from './CommentList'
 import CreateComment from './CreateComment'
@@ -14,7 +15,7 @@ const Comment = ({ commentsCount }: Props) => {
 
   return (
     <div css={container} ref={rootRef}>
-      <h2 css={title}>댓글 {commentsCount}개</h2>
+      <h3 css={title}>댓글 {commentsCount}개</h3>
       <CreateComment rootRef={rootRef} />
       <CommentList />
     </div>
@@ -25,9 +26,10 @@ const container = css`
   display: flex;
   flex-direction: column;
   flex: 1;
-  border-top: 1px solid ${colors.grey100};
   ${styles.padding}
   padding-top:0;
+
+  ${styles.desktopInner}
 `
 
 const title = css`
@@ -35,6 +37,7 @@ const title = css`
   padding-bottom: 14px;
   font-size: 16px;
   font-weight: bold;
+  border-top: 1px solid ${colors.grey100};
 `
 
 export default Comment

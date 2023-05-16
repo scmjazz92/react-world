@@ -1,11 +1,12 @@
 import { css } from '@emotion/react'
-import React from 'react'
+import React, { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { useRecoilValue } from 'recoil'
 import { ArticleResult } from '../../apis/types'
 import useLike from '../../hooks/apis/article/useLike'
 import useOpenLoginModal from '../../hooks/useOpenLoginModal'
 import { dateFormat, midnightCheck } from '../../lib/dateFormat'
+import { mediaQuery } from '../../lib/mediaQuery'
 import styles from '../../lib/styles'
 import { likeItemSelector } from '../../recoils/like'
 import { userState } from '../../recoils/user'
@@ -14,9 +15,10 @@ import ArticleStats from './ArticleStats'
 
 interface Props {
   article: ArticleResult
+  desktopAction: ReactNode
 }
 
-const ArticleDetailView = ({ article }: Props) => {
+const ArticleDetailView = ({ article, desktopAction }: Props) => {
   const {
     id,
     title,
@@ -72,6 +74,7 @@ const ArticleDetailView = ({ article }: Props) => {
             <span className="date">{date}</span>
           </div>
         </div>
+        {desktopAction}
       </div>
     </div>
   )
@@ -79,10 +82,14 @@ const ArticleDetailView = ({ article }: Props) => {
 
 const container = css`
   ${styles.padding}
-  word-break: break-all
+  word-break: break-all;
+
+  ${styles.desktopInner}
 `
 
 const content = css`
+  padding-bottom: 20px;
+
   & h2 {
     font-size: 20px;
     line-height: 1.2;

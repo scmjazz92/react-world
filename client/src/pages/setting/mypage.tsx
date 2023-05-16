@@ -1,16 +1,19 @@
 import React from 'react'
 import { useSearchParams } from 'react-router-dom'
 import BasicLayout from '../../components/@layout/BasicLayout'
+import BlindHeading from '../../components/@shared/BlindHeading'
 import HeaderBackButton from '../../components/header/HeaderBackButton'
 import ChangePasswordForm from '../../components/setting/ChangePasswordForm'
 import UnRegisterView from '../../components/setting/UnRegisterView'
 import TabFlexMode from '../../components/tab/TabFlexMode'
 import TabLinkItem from '../../components/tab/TabModeItem'
+import useMediaQuery from '../../hooks/useMediaQuery'
 import useRedirect from '../../hooks/useRedirect'
 
 type MyPageMode = 'change-password' | 'un-register'
 
 const MyPage = () => {
+  const { isMobile } = useMediaQuery()
   const redirect = useRedirect()
   const [searchParams] = useSearchParams()
   const mode = (searchParams.get('mode') ?? 'change-password') as MyPageMode
@@ -22,6 +25,7 @@ const MyPage = () => {
       title="마이페이지"
       left={<HeaderBackButton onClick={redirect} />}
     >
+      {!isMobile && <BlindHeading heading="마이페이지" level={2} />}
       <TabFlexMode>
         <TabLinkItem
           to={`/setting/mypage?mode=change-password${nextPath}`}

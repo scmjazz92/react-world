@@ -12,6 +12,7 @@ import useDeleteArticle from '../../hooks/apis/article/useDeleteArticle'
 import Comment from '../../components/comment/Comment'
 import { userState } from '../../recoils/user'
 import useRedirect from '../../hooks/useRedirect'
+import DesktopMyArticleAction from '../../components/article/DesktopMyArticleAction'
 
 const ArticleDetail = () => {
   const redirect = useRedirect()
@@ -52,7 +53,19 @@ const ArticleDetail = () => {
       left={<HeaderBackButton onClick={redirect} />}
       right={isMyArticle && <MoreButton onClick={handleBottomSheetModal} />}
     >
-      <ArticleDetailView article={article} />
+      <ArticleDetailView
+        article={article}
+        desktopAction={
+          <DesktopMyArticleAction
+            articleId={articleId}
+            onDelete={() =>
+              onDeleteArticle(articleId, {
+                onSuccess: () => redirect(),
+              })
+            }
+          />
+        }
+      />
       <Comment commentsCount={article.articleStats.commentsCount} />
     </BasicLayout>
   )

@@ -43,6 +43,7 @@ const container = css`
 
   & svg {
     display: block;
+    cursor: pointer;
   }
 `
 

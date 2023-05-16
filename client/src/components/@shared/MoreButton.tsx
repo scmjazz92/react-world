@@ -1,5 +1,6 @@
 import { css } from '@emotion/react'
 import React, { ButtonHTMLAttributes } from 'react'
+import { mediaQuery } from '../../lib/mediaQuery'
 import { More } from '../@icon'
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -20,6 +21,10 @@ const button = css`
   & svg {
     width: 24px;
     height: 24px;
+  }
+
+  ${mediaQuery.tablet} {
+    display: none;
   }
 `
 

@@ -8,6 +8,7 @@ import useOpenLoginModal from '../../hooks/useOpenLoginModal'
 import colors from '../../lib/colors'
 import { dateFormat, midnightCheck } from '../../lib/dateFormat'
 import { tagExcept } from '../../lib/except'
+import { mediaQuery } from '../../lib/mediaQuery'
 import styles from '../../lib/styles'
 import { likeItemSelector } from '../../recoils/like'
 import { userState } from '../../recoils/user'
@@ -86,7 +87,15 @@ const ArticleItem = ({ article, path }: Props) => {
 }
 
 const list = css`
-  ${styles.padding}
+  &:not(:first-of-type) {
+    padding-top: 60px;
+  }
+
+  ${mediaQuery.tablet} {
+    &:not(:first-of-type) {
+      padding-top: 0;
+    }
+  }
 `
 
 const content = css`
@@ -96,6 +105,7 @@ const content = css`
 
   .left {
     width: calc(100% - 50px);
+    padding-bottom:20px;
     padding-right:10px;
 
     .title {
