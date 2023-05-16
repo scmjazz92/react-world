@@ -25,6 +25,7 @@ const HeaderDesktopUtils = () => {
           </>
         ) : (
           <>
+            <NavLink to="/search">검색</NavLink>
             <NavLink to="/write">새 글 등록</NavLink>
             <NavLink to={`/story/${currentUser.username}`}>내 스토리</NavLink>
             <NavLink to="/setting/mypage">마이페이지</NavLink>
