@@ -32,6 +32,10 @@ const BlindHeadingSection = ({ heading, level, children, ...rest }: Props) => {
 }
 
 const section = css`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+
   .blind {
     ${styles.blind}
   }
