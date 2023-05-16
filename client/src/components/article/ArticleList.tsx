@@ -3,6 +3,7 @@ import React from 'react'
 import useArticles from '../../hooks/apis/article/useArticles'
 import { mediaQuery } from '../../lib/mediaQuery'
 import styles from '../../lib/styles'
+import EmptyMessage from '../@shared/EmptyMessage'
 import ArticleItem from './ArticleItem'
 
 const ArticleList = () => {
@@ -10,12 +11,14 @@ const ArticleList = () => {
 
   if (!articles) return null
 
-  return (
+  return articles.list.length ? (
     <ul css={container}>
       {articles.list.map((article) => (
         <ArticleItem key={article.id} article={article} />
       ))}
     </ul>
+  ) : (
+    <EmptyMessage text="작성된 글이 없습니다." />
   )
 }
 
@@ -31,7 +34,6 @@ const container = css`
   ${mediaQuery.desktop} {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    margin: 0 auto;
     gap: 60px;
   }
 `

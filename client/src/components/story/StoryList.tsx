@@ -4,6 +4,7 @@ import { StoryMode } from '../../apis/types'
 import useStoryArticles from '../../hooks/apis/story/useStoryArticles'
 import { mediaQuery } from '../../lib/mediaQuery'
 import styles from '../../lib/styles'
+import EmptyMessage from '../@shared/EmptyMessage'
 import ArticleItem from '../article/ArticleItem'
 
 interface Props {
@@ -12,12 +13,17 @@ interface Props {
   nextPath?: string
 }
 
+const emptyMessageMap = {
+  user: '게시물이 없습니다.',
+  like: '좋아요 한 게시물이 없습니다.',
+}
+
 const StoryList = ({ username, mode, nextPath }: Props) => {
   const { data: storyArticles } = useStoryArticles({ username, mode })
 
   if (!storyArticles) return null
 
-  return (
+  return storyArticles.list.length ? (
     <ul css={container}>
       {storyArticles.list.map((article) => (
         <ArticleItem
@@ -27,6 +33,8 @@ const StoryList = ({ username, mode, nextPath }: Props) => {
         />
       ))}
     </ul>
+  ) : (
+    <EmptyMessage text={emptyMessageMap[mode]} />
   )
 }
 
@@ -37,15 +45,11 @@ const container = css`
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 30px;
-    max-width: 1200px;
-    width: 100%;
-    margin: 0 auto;
   }
 
   ${mediaQuery.desktop} {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    margin: 0 auto;
     gap: 60px;
   }
 `
