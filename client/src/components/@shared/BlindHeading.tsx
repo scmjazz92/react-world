@@ -23,8 +23,6 @@ const BlindHeading = ({ heading, level }: Props) => {
     css: styles.blind,
   })
 
-  console.log(headingElement)
-
   return headingElement
 }
 
