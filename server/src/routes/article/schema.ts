@@ -1,5 +1,6 @@
 import { Exclude } from 'class-transformer'
 import { UserDto } from 'src/common/dtos/user.dto'
+import { PageInfo } from 'src/common/schema/schema'
 import { ArticleEntity } from 'src/entities/article'
 import { ArticleLikeEntity } from 'src/entities/article.like'
 import { ArticleStatsEntity } from 'src/entities/article.stats'
@@ -29,10 +30,13 @@ export class ArticleResult extends ArticleEntity {
 export class ArticlesResult {
   readonly list: ArticleResult[]
 
+  readonly pageInfo: PageInfo
+
   constructor(partial: Partial<ArticlesResult>) {
     this.list = partial.list.map(
       (list: ArticleResult) => new ArticleResult(list),
     )
+    this.pageInfo = new PageInfo(partial.pageInfo)
   }
 }
 

@@ -11,6 +11,7 @@ import { AppError } from 'src/lib/error'
 import { ArticlesMode } from 'src/lib/types'
 import { ArticleRepository } from 'src/repositories/article.repository'
 import { ArticleBodyDto } from 'src/routes/article/dtos/article.body.dto'
+import { PaginationDto } from 'src/common/dtos/pagination.dto'
 
 type SerializeArticle = Article & {
   user: User
@@ -82,83 +83,187 @@ export class ArticleService {
     value,
     mode,
     username,
+    limit = 20,
+    cursor,
   }: {
     userId: number
     value?: string
     mode?: ArticlesMode
     username?: string
-  }) {
+  } & PaginationDto) {
     if (mode === 'user') {
-      return this.getUserArticles({ username, userId })
+      return this.getUserArticles({ username, userId, limit, cursor })
     }
 
     if (mode === 'like') {
-      return this.getLikeArticles({ username, userId })
+      return this.getLikeArticles({ username, userId, limit, cursor })
     }
 
-    const articles = await this.articleRepository.getArticles({
-      userId,
-      value,
-    })
+    const [list, totalCount] = await Promise.all([
+      this.articleRepository.getArticles({
+        userId,
+        value,
+        limit,
+        cursor,
+      }),
+      this.articleRepository.totalCount(
+        value
+          ? {
+              where: {
+                OR: value
+                  ? [
+                      { title: { contains: value } },
+                      { body: { contains: value } },
+                    ]
+                  : undefined,
+              },
+            }
+          : undefined,
+      ),
+    ])
 
-    const serializedList = articles.map((article) => {
+    const endCursor = list.at(-1)?.id ?? null
+    const hasNextPage = endCursor
+      ? await this.articleRepository.hasNextPage({
+          endCursor,
+          ...(value
+            ? {
+                where: {
+                  OR: value
+                    ? [
+                        { title: { contains: value } },
+                        { body: { contains: value } },
+                      ]
+                    : undefined,
+                },
+              }
+            : undefined),
+        })
+      : false
+
+    const serializedList = list.map((article) => {
       return this.serialize(article)
     })
 
     return {
       list: serializedList,
+      pageInfo: {
+        totalCount,
+        endCursor,
+        hasNextPage,
+      },
     }
   }
 
   async getUserArticles({
     username,
     userId,
+    limit,
+    cursor,
   }: {
     username: string
     userId: number
-  }) {
+  } & PaginationDto) {
     const user = await this.authRepository.existsByUsername(username)
     if (!user) {
       throw new AppError('NotFound')
     }
 
-    const userArticles = await this.articleRepository.getUserArticles({
-      username,
-      userId,
-    })
+    const [list, totalCount] = await Promise.all([
+      this.articleRepository.getUserArticles({
+        username,
+        userId,
+        limit,
+        cursor,
+      }),
+      this.articleRepository.totalCount({
+        where: {
+          userId: user.id,
+        },
+      }),
+    ])
 
-    const serializedList = userArticles.map((article) => {
+    const endCursor = list.at(-1)?.id ?? null
+    const hasNextPage = endCursor
+      ? await this.articleRepository.hasNextPage({
+          endCursor,
+          where: {
+            userId: user.id,
+          },
+        })
+      : false
+
+    const serializedList = list.map((article) => {
       return this.serialize(article)
     })
 
     return {
       list: serializedList,
+      pageInfo: {
+        totalCount,
+        endCursor,
+        hasNextPage,
+      },
     }
   }
 
   async getLikeArticles({
     username,
     userId,
+    limit,
+    cursor,
   }: {
     username: string
     userId: number
-  }) {
+  } & PaginationDto) {
     const user = await this.authRepository.existsByUsername(username)
     if (!user) {
       throw new AppError('NotFound')
     }
 
-    const userArticles = await this.articleRepository.getLikeArticles({
-      userId,
-      userArticleId: user.id,
-    })
+    const [list, totalCount] = await Promise.all([
+      this.articleRepository.getLikeArticles({
+        userId,
+        userArticleId: user.id,
+        limit,
+        cursor,
+      }),
+      this.articleRepository.totalCount({
+        where: {
+          articleLike: {
+            some: {
+              userId: user.id,
+            },
+          },
+        },
+      }),
+    ])
 
-    const serializedList = userArticles.map((article) => {
+    const endCursor = list.at(-1)?.id ?? null
+    const hasNextPage = endCursor
+      ? await this.articleRepository.hasNextPage({
+          endCursor,
+          where: {
+            articleLike: {
+              some: {
+                userId: user.id,
+              },
+            },
+          },
+        })
+      : false
+
+    const serializedList = list.map((article) => {
       return { ...this.serialize(article) }
     })
 
     return {
       list: serializedList,
+      pageInfo: {
+        totalCount,
+        endCursor,
+        hasNextPage,
+      },
     }
   }
 

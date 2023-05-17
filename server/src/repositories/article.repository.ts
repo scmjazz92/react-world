@@ -1,10 +1,40 @@
 import { Injectable } from '@nestjs/common'
+import { Prisma } from '@prisma/client'
+import { PaginationDto } from 'src/common/dtos/pagination.dto'
 import { PrismaService } from 'src/prisma/prisma.service'
 import { ArticleBodyDto } from 'src/routes/article/dtos/article.body.dto'
 
 @Injectable()
 export class ArticleRepository {
   constructor(private readonly prisma: PrismaService) {}
+
+  async totalCount(options?: Prisma.ArticleCountArgs) {
+    const count = await this.prisma.article.count(options)
+    return count
+  }
+
+  async hasNextPage({
+    endCursor,
+    where,
+  }: {
+    endCursor: number
+    where?: Prisma.ArticleWhereInput
+  }) {
+    const nextPage =
+      (await this.prisma.article.count({
+        where: {
+          id: {
+            lt: endCursor,
+          },
+          ...where,
+        },
+        orderBy: {
+          id: 'desc',
+        },
+      })) > 0
+
+    return nextPage
+  }
 
   async createArticle({
     title,
@@ -49,9 +79,22 @@ export class ArticleRepository {
     return article
   }
 
-  async getArticles({ userId, value }: { userId: number; value?: string }) {
+  async getArticles({
+    userId,
+    value,
+    limit,
+    cursor,
+  }: {
+    userId: number
+    value?: string
+  } & PaginationDto) {
     const articles = await this.prisma.article.findMany({
       where: {
+        id: cursor
+          ? {
+              lt: cursor,
+            }
+          : undefined,
         OR: value
           ? [{ title: { contains: value } }, { body: { contains: value } }]
           : undefined,
@@ -59,6 +102,7 @@ export class ArticleRepository {
       orderBy: {
         id: 'desc',
       },
+      take: limit,
       include: {
         user: true,
         comment: true,
@@ -73,19 +117,27 @@ export class ArticleRepository {
   async getUserArticles({
     userId,
     username,
+    limit,
+    cursor,
   }: {
     userId: number
     username?: string
-  }) {
+  } & PaginationDto) {
     const articles = await this.prisma.article.findMany({
       where: {
         user: {
           username,
         },
+        id: cursor
+          ? {
+              lt: cursor,
+            }
+          : undefined,
       },
       orderBy: {
         id: 'desc',
       },
+      take: limit,
       include: {
         user: true,
         comment: true,
@@ -100,12 +152,19 @@ export class ArticleRepository {
   async getLikeArticles({
     userId,
     userArticleId,
+    limit,
+    cursor,
   }: {
     userId: number
     userArticleId: number
-  }) {
+  } & PaginationDto) {
     const articles = await this.prisma.article.findMany({
       where: {
+        id: cursor
+          ? {
+              lt: cursor,
+            }
+          : undefined,
         articleLike: {
           some: {
             userId: userArticleId,
@@ -115,6 +174,7 @@ export class ArticleRepository {
       orderBy: {
         id: 'desc',
       },
+      take: limit,
       include: {
         user: true,
         comment: true,

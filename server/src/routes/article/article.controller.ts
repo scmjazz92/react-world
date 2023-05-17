@@ -8,10 +8,12 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common'
 import { CurrentUser } from 'src/common/decorators/user.decorator'
 import { CommentBodyDto } from 'src/common/dtos/comment.body.dto'
+import { PaginationDto } from 'src/common/dtos/pagination.dto'
 import { UserDto } from 'src/common/dtos/user.dto'
 import { ArticleService } from 'src/services/article.service'
 import { CommentSevice } from 'src/services/comment.service'
@@ -62,9 +64,14 @@ export class ArticleController {
   }
 
   @Get()
-  async getArticles(@CurrentUser() user: UserDto) {
+  async getArticles(
+    @Query() { limit, cursor }: PaginationDto,
+    @CurrentUser() user: UserDto,
+  ) {
     const articlesResult = await this.articleService.getArticles({
       userId: user?.id,
+      limit,
+      cursor,
     })
 
     return new ArticlesResult(articlesResult)
