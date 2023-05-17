@@ -12,6 +12,8 @@ const Setting = lazy(() => import('../pages/setting/index'))
 const MyPage = lazy(() => import('../pages/setting/mypage'))
 const Story = lazy(() => import('../pages/story/[username]'))
 
+const NotFound = lazy(() => import('../pages/404'))
+
 const ProtectedRoute = lazy(() => import('../routes/ProtectedRoute'))
 const PublicRoute = lazy(() => import('../routes/PublicRoute'))
 
@@ -42,6 +44,7 @@ const routes: RouteObject[] = [
   { path: '/articles/:articleId', element: <ArticleDetail /> },
   { path: '/search', element: <Search /> },
   { path: '/story/:username', element: <Story /> },
+  { path: '*', element: <NotFound /> },
   ...protedRoute,
   ...publicRoute,
 ]
