@@ -1,25 +1,43 @@
-import { useQuery } from '@tanstack/react-query'
+import { useInfiniteQuery } from '@tanstack/react-query'
 import React from 'react'
 import { QUERY_KEYS } from '../../../lib/queryClient'
-import { CustomQueryOptions } from '../../../lib/types'
+import { CustomInfiniteQueryOptions } from '../../../lib/types'
 import Search from '../../../apis/search'
 
 interface Props {
   value?: string
-  options?: CustomQueryOptions<typeof Search.articles>
+  options?: CustomInfiniteQueryOptions<typeof Search.articles>
 }
 
-const useArticle = ({ value, options }: Props) => {
+const useSearchArticles = ({ value, options }: Props) => {
   const initialData = {
-    list: [],
+    pages: [
+      {
+        list: [],
+        pageInfo: {
+          endCursor: 0,
+          hasNextPage: false,
+          totalCount: 0,
+        },
+      },
+    ],
+    pageParams: [],
   }
 
-  return useQuery([QUERY_KEYS.ARTICLES, value], () => Search.articles(value), {
-    ...options,
-    initialData: value ? undefined : initialData,
-    staleTime: 1000,
-    cacheTime: 0,
-  })
+  return useInfiniteQuery(
+    [QUERY_KEYS.ARTICLES, value],
+    ({ pageParam }) => Search.articles({ value, cursor: pageParam }),
+    {
+      ...options,
+      initialData: value ? undefined : initialData,
+      getNextPageParam(lastPage) {
+        if (!lastPage.pageInfo.hasNextPage) return undefined
+        return lastPage.pageInfo.endCursor
+      },
+      staleTime: 1000,
+      cacheTime: 0,
+    },
+  )
 }
 
-export default useArticle
+export default useSearchArticles

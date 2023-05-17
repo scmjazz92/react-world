@@ -1,22 +1,26 @@
-import { useQuery } from '@tanstack/react-query'
+import { useInfiniteQuery } from '@tanstack/react-query'
 import React from 'react'
 import { QUERY_KEYS } from '../../../lib/queryClient'
-import { CustomQueryOptions } from '../../../lib/types'
+import { CustomInfiniteQueryOptions } from '../../../lib/types'
 import Story from '../../../apis/story'
 import { StoryMode } from '../../../apis/types'
 
 interface Props {
   username: string
   mode: StoryMode
-  options?: CustomQueryOptions<typeof Story.getAll>
+  options?: CustomInfiniteQueryOptions<typeof Story.getAll>
 }
 
 const useStoryArticles = ({ username, mode, options }: Props) => {
-  return useQuery(
+  return useInfiniteQuery(
     [QUERY_KEYS.ARTICLES, username, mode],
-    () => Story.getAll({ username, mode }),
+    ({ pageParam }) => Story.getAll({ username, mode, cursor: pageParam }),
     {
       ...options,
+      getNextPageParam(lastPage) {
+        if (!lastPage.pageInfo.hasNextPage) return undefined
+        return lastPage.pageInfo.endCursor
+      },
       staleTime: 1000,
       cacheTime: 0,
     },

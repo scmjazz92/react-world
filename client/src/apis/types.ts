@@ -59,6 +59,7 @@ export interface ArticleResult {
 
 export interface ArticlesResult {
   list: ArticleResult[]
+  pageInfo: PageInfo
 }
 
 export interface LikeResult {
@@ -89,4 +90,15 @@ export type StoryMode = 'user' | 'like'
 export interface StoryParams {
   username: string
   mode: StoryMode
+}
+
+export interface Pagination {
+  limit?: number
+  cursor?: number
+}
+
+export interface PageInfo {
+  endCursor: number | null
+  hasNextPage: boolean
+  totalCount: number
 }

@@ -7,6 +7,7 @@ import {
   CommentResult,
   CommentsResult,
   LikeResult,
+  Pagination,
 } from './types'
 
 const Article = {
@@ -24,8 +25,9 @@ const Article = {
     return response.data
   },
 
-  async getAll() {
-    const response = await client.get<ArticlesResult>(`/articles`)
+  async getAll({ limit = 20, cursor }: Pagination) {
+    const query = cursor ? `?limit=${limit}&cursor=${cursor}` : ''
+    const response = await client.get<ArticlesResult>(`/articles${query}`)
     return response.data
   },
 

@@ -46,10 +46,11 @@ const Search = () => {
 }
 
 const container = css`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+
   ${mediaQuery.tablet} {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
     width: 600px;
     margin: 0 auto;
   }

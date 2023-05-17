@@ -24,6 +24,7 @@ const container = css`
   position: sticky;
   top: 0;
   background: ${colors.white};
+  padding: 16px;
 `
 
 const block = css`
@@ -32,7 +33,6 @@ const block = css`
   justify-content: center;
   height: 36px;
   padding: 0 8px;
-  margin: 16px;
   background: ${colors.grey50};
   border-radius: 4px;
 

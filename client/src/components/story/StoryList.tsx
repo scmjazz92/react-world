@@ -1,7 +1,8 @@
 import { css } from '@emotion/react'
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import { StoryMode } from '../../apis/types'
 import useStoryArticles from '../../hooks/apis/story/useStoryArticles'
+import useInfiniteScroll from '../../hooks/useInfiniteScroll'
 import { mediaQuery } from '../../lib/mediaQuery'
 import styles from '../../lib/styles'
 import EmptyMessage from '../@shared/EmptyMessage'
@@ -19,20 +20,36 @@ const emptyMessageMap = {
 }
 
 const StoryList = ({ username, mode, nextPath }: Props) => {
-  const { data: storyArticles } = useStoryArticles({ username, mode })
+  const {
+    data: storyArticles,
+    hasNextPage,
+    fetchNextPage,
+  } = useStoryArticles({ username, mode })
+  const fetchMoreRef = useRef<HTMLDivElement>(null)
+  const intersecting = useInfiniteScroll({ targetRef: fetchMoreRef })
+
+  useEffect(() => {
+    if (!intersecting || !hasNextPage) return
+    fetchNextPage()
+  }, [intersecting, fetchNextPage])
 
   if (!storyArticles) return null
 
-  return storyArticles.list.length ? (
-    <ul css={container}>
-      {storyArticles.list.map((article) => (
-        <ArticleItem
-          key={article.id}
-          article={article}
-          path={`/articles/${article.id}?next=/story/${username}?mode=${mode}${nextPath}`}
-        />
-      ))}
-    </ul>
+  return storyArticles.pages[0].list.length ? (
+    <>
+      <ul css={container}>
+        {storyArticles.pages.map((page) =>
+          page.list.map((article) => (
+            <ArticleItem
+              key={article.id}
+              article={article}
+              path={`/articles/${article.id}?next=/story/${username}?mode=${mode}${nextPath}`}
+            />
+          )),
+        )}
+      </ul>
+      <div ref={fetchMoreRef}></div>
+    </>
   ) : (
     <EmptyMessage text={emptyMessageMap[mode]} />
   )

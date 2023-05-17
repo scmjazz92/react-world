@@ -1,10 +1,17 @@
 import client from '../lib/client'
-import { ArticlesResult } from './types'
+import { ArticlesResult, Pagination } from './types'
 
 const Search = {
-  async articles(value?: string) {
+  async articles({
+    value,
+    limit = 20,
+    cursor,
+  }: { value?: string } & Pagination) {
     const query = value ? `?value=${value}` : ''
-    const response = await client.get<ArticlesResult>(`/search${query}`)
+    const paginationQuery = cursor ? `&limit=${limit}&cursor=${cursor}` : ''
+    const response = await client.get<ArticlesResult>(
+      `/search${query}${paginationQuery}`,
+    )
     return response.data
   },
 }
