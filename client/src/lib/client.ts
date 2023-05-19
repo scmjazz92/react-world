@@ -3,9 +3,11 @@ import Auth from '../apis/auth'
 import { AppError } from './error'
 import storage, { storageKeys } from './storage'
 
+const BASE_URL = import.meta.env.VITE_SERVER_URL as string
+
 const client = axios.create({
   withCredentials: true,
-  baseURL: 'http://localhost:8000/api',
+  baseURL: BASE_URL,
 })
 
 client.interceptors.request.use(
